@@ -1,7 +1,6 @@
-window.React = require('react');
-window.Router = require('react-router');
+
 window._ = require('lodash');
-window.$ = window.jQuery = require('jquery');
+// window.$ = window.jQuery = require('jquery');
 require('bootstrap-sass');
 
 

@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-
-class Home extends Component {
+export default class Home extends Component {
     render(){
-        return (<h1>Hi</h1>);
+        const token = auth.getToken();
+        return (
+            <div>
+                <h1>Dashboard</h1>
+                <p>You made it!</p>
+                <p>{token}</p>
+            </div>
+        );
     }
 }
 
-export default Home;
+
