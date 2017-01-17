@@ -148,29 +148,9 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    <a href="{{ url('/login') }}">Login</a>
-                    <a href="{{ url('/register') }}">Register</a>
-                </div>
-            @endif
+            <div id="app"></div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-
-            <div class="pure-g">
-              <!-- Video area -->
+            <!-- <div class="pure-g">
               <div class="pure-u-2-3" id="video-container">
                 <div id="their-videos"></div>
                 <div>
@@ -178,12 +158,8 @@
                   <video id="my-video" muted="true" autoplay></video>
                 </div>
               </div>
-
-              <!-- Steps -->
               <div class="pure-u-1-3">
                 <h2>SkyWay Video Chat</h2>
-
-                <!-- Get local audio/video stream -->
                 <div id="step1">
                   <p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
                   <div id="step1-error">
@@ -191,8 +167,6 @@
                     <a href="#" class="pure-button pure-button-error" id="step1-retry">Try again</a>
                   </div>
                 </div>
-
-                <!-- Make calls to others -->
                 <div id="step2">
                   <p>Your id: <span id="my-id">...</span></p>
                   <h3>Make a call</h3>
@@ -203,15 +177,14 @@
                   <p><strong>Warning:</strong> You may connect with people you don't know if you both use the same room name.</p>
                   <p><strong>注意：</strong>同じルーム名を使用した場合、知らない人と接続する可能性があります。</p>
                 </div>
-
-                <!-- Call in progress -->
                 <div id="step3">
                   <p>Currently in room <span id="room-id">...</span></p>
                   <p><a href="#" class="pure-button pure-button-error" id="end-call">End call</a></p>
                 </div>
               </div>
-            </div>
+            </div> -->
 
         </div>
+        <script src="{{ elixir('js/teacher.js') }}"></script>
     </body>
 </html>
