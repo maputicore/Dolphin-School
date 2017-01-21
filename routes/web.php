@@ -48,4 +48,8 @@ Route::group([
     });
 });
 
+Route::get('/test', function () {
+    return view('teacher.index')->with('env', app()->environment());
+});
+
 

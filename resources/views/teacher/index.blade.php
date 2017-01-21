@@ -9,9 +9,37 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+
+        <script src="https://skyway.io/dist/0.3/peer.min.js"></script>
+        <script src="https://skyway.io/dist/multiparty.min.js"></script>
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-        <script type="text/javascript" src="https://cdn.skyway.io/skyway.js"></script>
+
+        <style>
+          body {
+            margin: 0;
+          }
+          #message {
+            width: 190px;
+            margin: 10px;
+          }
+          #streams {
+            position: absolute;
+            top: 10px;
+            margin-left: 200px;
+          }
+          .video{
+            margin: 0px 0px 0px 5px;
+            width: 300px;
+            border: 1px solid #000000;
+            border-radius: 10px;
+          }
+          #streams .my-video {
+            -webkit-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            -moz-transform: scaleX(-1);
+            transform: scaleX(-1);
+          }
+        </style>
         <!-- Styles -->
         <style>
             html, body {
@@ -66,7 +94,7 @@
             }
         </style>
 
-        <script>
+        <!-- <script>
             // Compatibility shim
             navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
             // Peer object
@@ -143,6 +171,81 @@
               $('#step1, #step2').hide();
               $('#step3').show();
             }
+        </script> -->
+
+        <script>
+
+        var multiparty;
+        // MultiParty インスタンスを生成
+
+        function start() {
+          // MultiParty インスタンスを生成
+          multiparty = new MultiParty( {
+            "key": "{{ env('WEB_RTC_APIKEY') }}",
+            "reliable": true,
+            "debug": 3
+          });
+          /////////////////////////////////
+          // for MediaStream
+          multiparty.on('my_ms', function(video) {
+            // 自分のvideoを表示
+            var vNode = MultiParty.util.createVideoNode(video);
+            vNode.setAttribute("class", "video my-video");
+            vNode.volume = 0;
+            $(vNode).appendTo("#streams");
+          }).on('peer_ms', function(video) {
+            console.log("video received!!")
+            // peerのvideoを表示
+            console.log(video);
+            var vNode = MultiParty.util.createVideoNode(video);
+            vNode.setAttribute("class", "video peer-video");
+            $(vNode).appendTo("#streams");
+            console.log($("#streams"))
+          }).on('ms_close', function(peer_id) {
+            // peerが切れたら、対象のvideoノードを削除する
+            $("#"+peer_id).remove();
+          })
+          ////////////////////////////////
+          // for DataChannel
+          multiparty.on('message', function(mesg) {
+            // peerからテキストメッセージを受信
+            $("p.receive").append(mesg.data + "<br>");
+          });
+          ////////////////////////////////
+          // Error handling
+          multiparty.on('error', function(err) {
+            alert(err);
+          });
+          multiparty.start();
+          //////////////////////////////////////////////////////////
+          // テキストフォームに入力されたテキストをpeerに送信
+          $("#message form").on("submit", function(ev) {
+            ev.preventDefault();  // onsubmitのデフォルト動作（reload）を抑制
+            // テキストデータ取得
+            var $text = $(this).find("input[type=text]");
+            var data = $text.val();
+            if(data.length > 0) {
+              data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              $("p.receive").append(data + "<br>");
+              // メッセージを接続中のpeerに送信する
+              multiparty.send(data);
+              $text.val("");
+            }
+          });
+          ///////////////////////////////////////////////////
+          // handle mute/unmute
+          $("#video-mute").on("click", function(ev) {
+            var mute = !$(this).data("muted");
+            multiparty.mute({video: mute});
+            $(this).text("video " + (mute ? "unmute" : "mute")).data("muted", mute);
+          });
+          $("#audio-mute").on("click", function(ev) {
+            var mute = !$(this).data("muted");
+            multiparty.mute({audio: mute});
+            $(this).text("audio " + (mute ? "unmute" : "mute")).data("muted", mute);
+          });
+        }
+        start();
         </script>
 
     </head>
@@ -152,47 +255,17 @@
 
             </div>
 
-            <div class="pure-g">
-              <!-- Video area -->
-              <div class="pure-u-2-3" id="video-container">
-                <div id="their-videos"></div>
-                <div>
-                  <label id="my-label"></label>
-                  <video id="my-video" muted="true" autoplay></video>
-                </div>
-              </div>
-
-              <!-- Steps -->
-              <div class="pure-u-1-3">
-                <h2>SkyWay Video Chat</h2>
-
-                <!-- Get local audio/video stream -->
-                <div id="step1">
-                  <p>Please click `allow` on the top of the screen so we can access your webcam and microphone for calls.</p>
-                  <div id="step1-error">
-                    <p>Failed to access the webcam and microphone. Make sure to run this demo on an http server and click allow when asked for permission by the browser.</p>
-                    <a href="#" class="pure-button pure-button-error" id="step1-retry">Try again</a>
-                  </div>
-                </div>
-
-                <!-- Make calls to others -->
-                <div id="step2">
-                  <p>Your id: <span id="my-id">...</span></p>
-                  <h3>Make a call</h3>
-                  <form id="make-call" class="pure-form">
-                    <input type="text" placeholder="Join room..." id="join-room">
-                    <button class="pure-button pure-button-success" type="submit">Join</button>
-                  </form>
-                  <p><strong>Warning:</strong> You may connect with people you don't know if you both use the same room name.</p>
-                  <p><strong>注意：</strong>同じルーム名を使用した場合、知らない人と接続する可能性があります。</p>
-                </div>
-
-                <!-- Call in progress -->
-                <div id="step3">
-                  <p>Currently in room <span id="room-id">...</span></p>
-                  <p><a href="#" class="pure-button pure-button-error" id="end-call">End call</a></p>
-                </div>
-              </div>
+            <div id="message">
+              <form>
+                <input type="text"><button type="submit">send</button>
+              </form>
+              <p class="receive">
+              </p>
+            </div>
+            <div id="streams">
+              <div>
+                <button id="video-mute" data-muted="false">video mute</button>
+                <button id="audio-mute" data-muted="false">audio mute</button>
             </div>
 
         </div>
