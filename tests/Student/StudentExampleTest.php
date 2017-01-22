@@ -40,4 +40,15 @@ class StudentExampleTest extends \TestCase
              ->seePageIs('/login')
              ->see('These credentials do not match our records');
     }
+
+    /** @test */
+    // function it_should_logout_user()
+    // {
+    //     $this->visit('/')
+    //          ->type('hanachandev@gmail.com', 'email')
+    //          ->type('12345678', 'password')
+    //          ->press('Login')
+    //          ->post('/logout')
+    //          ->seePageIs('/login');
+    // }
 }
