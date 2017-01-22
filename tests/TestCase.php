@@ -31,9 +31,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $this->baseUrl = env('APP_URL', $this->baseUrl);
         if ($this->prefixDomain) {
             $this->baseUrl = substr_replace(
-                $this->prefixDomain,
                 $this->baseUrl,
-                strlen('https://'),
+                $this->prefixDomain,
+                strlen('http://'),
                 0
             );
         }
