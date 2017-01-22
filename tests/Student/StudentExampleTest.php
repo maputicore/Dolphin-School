@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class TeacherExampleTest extends \TeacherTestCase
+class StudentExampleTest extends \TestCase
 {
     protected $credentials = [
         'email'    => 'iwgac1026@gmail.com',
@@ -22,10 +22,10 @@ class TeacherExampleTest extends \TeacherTestCase
     function it_should_login_user()
     {
         $this->visit('/')
-             ->type('iwgac1026@gmail.com', 'email')
+             ->type('hanachandev@gmail.com', 'email')
              ->type('12345678', 'password')
              ->press('Login')
-             ->seeIsAuthenticated('teacher');
+             ->seeIsAuthenticated('student');
     }
 
     /** @test */
