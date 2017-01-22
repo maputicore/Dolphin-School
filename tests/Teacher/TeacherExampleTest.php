@@ -25,7 +25,8 @@ class TeacherExampleTest extends \TeacherTestCase
              ->type('iwgac1026@gmail.com', 'email')
              ->type('12345678', 'password')
              ->press('Login')
-             ->seeIsAuthenticated('teacher');
+             // ->seeIsAuthenticated('teacher');
+             ->seePageIs('/');
     }
 
     /** @test */
@@ -39,5 +40,17 @@ class TeacherExampleTest extends \TeacherTestCase
              ->press('Login')
              ->seePageIs('/login')
              ->see('These credentials do not match our records');
+    }
+
+    /** @test */
+    function it_should_logout_user()
+    {
+        $this->visit('/')
+             // ->type('iwgac1026@gmail.com', 'email')
+             // ->type('12345678', 'password')
+             // ->press('Login')
+             // ->see('Logout')
+             // ->post('logout')
+             ->seePageIs('/login');
     }
 }
