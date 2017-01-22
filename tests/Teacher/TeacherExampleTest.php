@@ -4,16 +4,12 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ExampleTest extends TestCase
+class TeacherExampleTest extends \TeacherTestCase
 {
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testBasicExample()
+    /** @test */
+    function it_should_display_title()
     {
-        $this->visit('/test')
+        $this->visit('/')
              ->see('Laravel');
     }
 }

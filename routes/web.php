@@ -7,6 +7,7 @@ Route::group([
     Route::group(['middleware' => 'auth:teacher'], function () {
         Route::get('/', 'HomeController@index');
     });
+
     Route::group([
         'namespace' => 'Auth'
     ], function() {
@@ -29,6 +30,7 @@ Route::group([
     Route::group(['middleware' => 'auth:student'], function () {
         Route::get('/', 'HomeController@index');
     });
+
     Route::group([
         'namespace' => 'Auth'
     ], function() {
