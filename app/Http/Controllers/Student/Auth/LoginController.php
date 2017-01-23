@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Student\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Contracts\Auth\Factory as Auth;
 
 class LoginController extends Controller
 {
+    protected $auth;
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -25,15 +28,33 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
+
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Auth $auth)
     {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->auth = $auth;
+    }
+
+    public function showLoginForm()
+    {
+        return view('student.auth.login');
+    }
+
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return $this->auth->guard('student');
     }
 }

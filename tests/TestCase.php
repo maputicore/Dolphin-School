@@ -9,6 +9,8 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     protected $baseUrl = 'http://localhost';
 
+    protected $prefixDomain = '';
+
     /**
      * Creates the application.
      *
@@ -19,7 +21,21 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
         $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $this->setBaseUrl();
 
         return $app;
+    }
+
+    protected function setBaseUrl()
+    {
+        $this->baseUrl = env('APP_URL', $this->baseUrl);
+        if ($this->prefixDomain) {
+            $this->baseUrl = substr_replace(
+                $this->baseUrl,
+                $this->prefixDomain,
+                strlen('http://'),
+                0
+            );
+        }
     }
 }

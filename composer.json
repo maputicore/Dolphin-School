@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*"
+        "laravel/framework": "5.3.*",
+        "laravelcollective/html": "^5.3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -25,8 +26,12 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
-        ]
+            "tests/TestCase.php",
+            "tests/TeacherTestCase.php"
+        ],
+        "psr-4": {
+            "Tests\\": "tests"
+        }
     },
     "scripts": {
         "post-root-package-install": [
