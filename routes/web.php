@@ -6,6 +6,7 @@ Route::group([
 ], function () {
     Route::group(['middleware' => 'auth:teacher'], function () {
         Route::get('/', 'HomeController@index');
+        Route::resource('/students', 'StudentsController');
     });
 
     Route::group([
@@ -51,7 +52,7 @@ Route::group([
 });
 
 Route::get('/test', function () {
-    return view('teacher.index')->with('env', app()->environment());
+    return view('index')->with('env', app()->environment());
 });
 
 
