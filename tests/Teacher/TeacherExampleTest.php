@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Teacher;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -52,5 +53,13 @@ class TeacherExampleTest extends \TeacherTestCase
              // ->see('Logout')
              // ->post('logout')
              ->seePageIs('/login');
+    }
+
+    /** @test */
+    function it_should_display_students()
+    {
+        $this->actingAs(new Teacher(), 'teacher')
+             ->visit('/students')
+             ->see('hanachandev@gmail.com');
     }
 }
