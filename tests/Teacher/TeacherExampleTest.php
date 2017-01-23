@@ -64,12 +64,12 @@ class TeacherExampleTest extends \TeacherTestCase
     }
 
     /** @test */
-    function it_can_create_lecture()
+    function it_can_create_lesson()
     {
         $this->actingAs(new Teacher(), 'teacher')
-             ->visit('/lectures')
-             ->press('Create new Lecture')
-             ->seePageIs('/lectures/create');
+             ->visit('/lessons')
+             ->press('Create new Lesson')
+             ->seePageIs('/lessons/create');
     }
 }
 

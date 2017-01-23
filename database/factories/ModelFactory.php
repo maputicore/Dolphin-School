@@ -22,7 +22,7 @@
 //     ];
 // });
 
-$factory->define(App\Models\Lecture::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Lesson::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->title,
         'description' => $faker->sentence,
