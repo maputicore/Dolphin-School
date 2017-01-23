@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,9 +11,8 @@
     <title>{{ config('app.name', 'Teacher') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-    <!-- <script src=""></script> -->
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script type="text/javascript" src="https://cdn.skyway.io/skyway.js"></script>
     <!-- Scripts -->
@@ -84,6 +83,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script type="text/javascript" src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>
