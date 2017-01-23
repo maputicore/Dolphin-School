@@ -15,7 +15,8 @@ class LessonsController extends Controller
      */
     public function index()
     {
-        return view('teacher.lesson.index');
+        $lessons = Lesson::all();
+        return view('teacher.lesson.index')->with('lessons', $lessons);
     }
 
     /**
@@ -37,6 +38,7 @@ class LessonsController extends Controller
     public function store(Request $request)
     {
         $lesson = new Lesson();
+        $lesson->teacher_id = $this->currentUser->id;
         $lesson->name = $request->input('name');
         $lesson->description = $request->input('description');
         $lesson->start_time = $request->input('start_time');
