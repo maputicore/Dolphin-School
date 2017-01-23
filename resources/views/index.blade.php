@@ -94,159 +94,6 @@
             }
         </style>
 
-        <!-- <script>
-            // Compatibility shim
-            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            // Peer object
-            var peer = new Peer({
-              key: '{{ env('WEB_RTC_APIKEY') }}',
-              debug: 3
-            });
-            var room;
-            peer.on('open', function(){
-              $('#my-id').text(peer.id);
-              // Get things started
-              step1();
-            });
-            peer.on('error', function(err){
-              alert(err.message);
-              // Return to step 2 if error occurs
-              step2();
-            });
-            // Click handlers setup
-            $(function(){
-              $('#make-call').submit(function(e){
-                e.preventDefault();
-                // Initiate a call!
-                var roomName = $('#join-room').val();
-                if (!roomName) {
-                  return;
-                }
-                room = peer.joinRoom('sfu_video_' + roomName, {mode: 'sfu', stream: window.localStream});
-                $('#room-id').text(roomName);
-                step3(room);
-              });
-              $('#end-call').click(function(){
-                room.close();
-                step2();
-              });
-              // Retry if getUserMedia fails
-              $('#step1-retry').click(function(){
-                $('#step1-error').hide();
-                step1();
-              });
-            });
-            function step1 () {
-              // Get audio/video stream
-              navigator.getUserMedia({audio: true, video: true}, function(stream){
-                // Set your video displays
-                $('#my-video').prop('src', URL.createObjectURL(stream));
-                $('#my-label').text(peer.id + ':' + stream.id);
-                window.localStream = stream;
-                step2();
-              }, function(){ $('#step1-error').show(); });
-            }
-            function step2 () {
-              $('#step1, #step3').hide();
-              $('#step2').show();
-              $('#join-room').focus();
-            }
-            function step3 (room) {
-              // Wait for stream on the call, then set peer video display
-              room.on('stream', function(stream){
-                const streamURL = URL.createObjectURL(stream);
-                const peerId = stream.peerId;
-                $('#their-videos').append($(
-                  '<div>' +
-                    '<label id="label_' + peerId + '">' + stream.peerId + ':' + stream.id + '</label>' +
-                    '<video autoplay class="remoteVideos" src="' + streamURL + '" id="video_' + peerId + '">' +
-                  '</div>'));
-              });
-              room.on('removeStream', function(removedStream) {
-                $('#video_' + removedStream.peerId).remove();
-                $('#label_' + removedStream.peerId).remove();
-              });
-              // UI stuff
-              room.on('close', step2);
-              $('#step1, #step2').hide();
-              $('#step3').show();
-            }
-        </script> -->
-
-        <script>
-
-        var multiparty;
-        // MultiParty インスタンスを生成
-
-        function start() {
-          // MultiParty インスタンスを生成
-          multiparty = new MultiParty( {
-            "key": "{{ env('WEB_RTC_APIKEY') }}",
-            "reliable": true,
-            "debug": 3
-          });
-          /////////////////////////////////
-          // for MediaStream
-          multiparty.on('my_ms', function(video) {
-            // 自分のvideoを表示
-            var vNode = MultiParty.util.createVideoNode(video);
-            vNode.setAttribute("class", "video my-video");
-            vNode.volume = 0;
-            $(vNode).appendTo("#streams");
-          }).on('peer_ms', function(video) {
-            console.log("video received!!")
-            // peerのvideoを表示
-            console.log(video);
-            var vNode = MultiParty.util.createVideoNode(video);
-            vNode.setAttribute("class", "video peer-video");
-            $(vNode).appendTo("#streams");
-            console.log($("#streams"))
-          }).on('ms_close', function(peer_id) {
-            // peerが切れたら、対象のvideoノードを削除する
-            $("#"+peer_id).remove();
-          })
-          ////////////////////////////////
-          // for DataChannel
-          multiparty.on('message', function(mesg) {
-            // peerからテキストメッセージを受信
-            $("p.receive").append(mesg.data + "<br>");
-          });
-          ////////////////////////////////
-          // Error handling
-          multiparty.on('error', function(err) {
-            alert(err);
-          });
-          multiparty.start();
-          //////////////////////////////////////////////////////////
-          // テキストフォームに入力されたテキストをpeerに送信
-          $("#message form").on("submit", function(ev) {
-            ev.preventDefault();  // onsubmitのデフォルト動作（reload）を抑制
-            // テキストデータ取得
-            var $text = $(this).find("input[type=text]");
-            var data = $text.val();
-            if(data.length > 0) {
-              data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              $("p.receive").append(data + "<br>");
-              // メッセージを接続中のpeerに送信する
-              multiparty.send(data);
-              $text.val("");
-            }
-          });
-          ///////////////////////////////////////////////////
-          // handle mute/unmute
-          $("#video-mute").on("click", function(ev) {
-            var mute = !$(this).data("muted");
-            multiparty.mute({video: mute});
-            $(this).text("video " + (mute ? "unmute" : "mute")).data("muted", mute);
-          });
-          $("#audio-mute").on("click", function(ev) {
-            var mute = !$(this).data("muted");
-            multiparty.mute({audio: mute});
-            $(this).text("audio " + (mute ? "unmute" : "mute")).data("muted", mute);
-          });
-        }
-        start();
-        </script>
 
     </head>
     <body>
@@ -270,4 +117,81 @@
 
         </div>
     </body>
+    <script>
+
+    var multiparty;
+    // MultiParty インスタンスを生成
+
+    function start() {
+      // MultiParty インスタンスを生成
+      multiparty = new MultiParty( {
+        "key": "{{ env('WEB_RTC_APIKEY') }}",
+        "reliable": true,
+        "debug": 3
+      });
+      /////////////////////////////////
+      // for MediaStream
+      multiparty.on('my_ms', function(video) {
+        // 自分のvideoを表示
+        var vNode = MultiParty.util.createVideoNode(video);
+        vNode.setAttribute("class", "video my-video");
+        vNode.volume = 0;
+        $(vNode).appendTo("#streams");
+      }).on('peer_ms', function(video) {
+        console.log("video received!!")
+        // peerのvideoを表示
+        console.log(video);
+        var vNode = MultiParty.util.createVideoNode(video);
+        vNode.setAttribute("class", "video peer-video");
+        $(vNode).appendTo("#streams");
+        console.log($("#streams"))
+      }).on('ms_close', function(peer_id) {
+        // peerが切れたら、対象のvideoノードを削除する
+        $("#"+peer_id).remove();
+      })
+      ////////////////////////////////
+      // for DataChannel
+      multiparty.on('message', function(mesg) {
+        // peerからテキストメッセージを受信
+        $("p.receive").append(mesg.data + "<br>");
+      });
+      ////////////////////////////////
+      // Error handling
+      multiparty.on('error', function(err) {
+        console.log(err);
+        alert(err);
+      });
+      multiparty.start();
+      //////////////////////////////////////////////////////////
+      // テキストフォームに入力されたテキストをpeerに送信
+      $("#message form").on("submit", function(ev) {
+        ev.preventDefault();  // onsubmitのデフォルト動作（reload）を抑制
+        // テキストデータ取得
+        var $text = $(this).find("input[type=text]");
+        var data = $text.val();
+        if(data.length > 0) {
+          data = data.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          console.log(data);
+          $("p.receive").append(data + "<br>");
+          // メッセージを接続中のpeerに送信する
+          multiparty.send(data);
+          $text.val("");
+        }
+      });
+      ///////////////////////////////////////////////////
+      // handle mute/unmute
+      $("#video-mute").on("click", function(ev) {
+        var mute = !$(this).data("muted");
+        console.log(mute);
+        multiparty.mute({video: mute});
+        $(this).text("video " + (mute ? "unmute" : "mute")).data("muted", mute);
+      });
+      $("#audio-mute").on("click", function(ev) {
+        var mute = !$(this).data("muted");
+        multiparty.mute({audio: mute});
+        $(this).text("audio " + (mute ? "unmute" : "mute")).data("muted", mute);
+      });
+    }
+    start();
+    </script>
 </html>
