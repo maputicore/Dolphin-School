@@ -71,6 +71,14 @@ class TeacherExampleTest extends \TeacherTestCase
              ->press('Create new Lesson')
              ->seePageIs('/lessons/create');
     }
+
+    /** @test */
+    function it_should_display_add_button()
+    {
+        $this->actingAs(new Teacher(), 'teacher')
+             ->visit('/lessons/create')
+             ->see('Add');
+    }
 }
 
 

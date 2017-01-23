@@ -36,7 +36,13 @@ class LessonsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lesson = new Lesson();
+        $lesson->name = $request->input('name');
+        $lesson->description = $request->input('description');
+        $lesson->start_time = $request->input('start_time');
+        $lesson->finish_time = $request->input('finish_time');
+        $lesson->save();
+        return redirect()->to('lessons');
     }
 
     /**
