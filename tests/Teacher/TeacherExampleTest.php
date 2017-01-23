@@ -62,4 +62,28 @@ class TeacherExampleTest extends \TeacherTestCase
              ->visit('/students')
              ->see('hanachandev@gmail.com');
     }
+
+    /** @test */
+    function it_can_create_lecture()
+    {
+        $this->actingAs(new Teacher(), 'teacher')
+             ->visit('/lectures')
+             ->press('Create new Lecture')
+             ->seePageIs('/lectures/create');
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

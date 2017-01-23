@@ -7,6 +7,7 @@ Route::group([
     Route::group(['middleware' => 'auth:teacher'], function () {
         Route::get('/', 'HomeController@index');
         Route::resource('/students', 'StudentsController');
+        Route::resource('/lectures', 'LecturesController');
     });
 
     Route::group([
