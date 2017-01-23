@@ -2,6 +2,6 @@
 
 @section('content')
 <form action="">
-    <button type="submit">Create new Lecture</button>
+    <button type="submit">Create new Lesson</button>
 </form>
 @endsection

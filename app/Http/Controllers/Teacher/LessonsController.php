@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Teacher;
 
-use App\Models\Lecture;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class LecturesController extends Controller
+class LessonsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class LecturesController extends Controller
      */
     public function index()
     {
-        return view('teacher.lecture.index');
+        return view('teacher.lesson.index');
     }
 
     /**
@@ -25,7 +25,7 @@ class LecturesController extends Controller
      */
     public function create()
     {
-        return view('teacher.lecture.create');
+        return view('teacher.lesson.create');
     }
 
     /**
