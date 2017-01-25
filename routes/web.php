@@ -56,4 +56,30 @@ Route::get('/test', function () {
     return view('index')->with('env', app()->environment());
 });
 
+Route::get('/auth/{service}', 'Common\Auth\SocialController@redirectToProvider');
+Route::get('/auth/{service}/callback', 'Common\Auth\SocialController@handleProviderCallback');
+
+Route::group([
+    'namespace' => 'Teacher',
+], function () {
+    Route::group(['middleware' => 'auth:teacher'], function () {
+        Route::get('/', 'HomeController@index');
+        Route::resource('/students', 'StudentsController');
+        Route::resource('/lessons', 'LessonsController');
+    });
+
+    Route::group([
+        'namespace' => 'Auth'
+    ], function() {
+        // Authentication Routes...
+        Route::get('login', 'LoginController@showLoginForm');
+        Route::post('login', 'LoginController@login');
+        Route::post('logout', 'LoginController@logout');
+
+        // Password Reset Routes...
+        // Route::get('password/reset/{token?}', 'PasswordController@showResetForm');
+        // Route::post('password/email', 'PasswordController@sendResetLinkEmail');
+        // Route::post('password/reset', 'PasswordController@reset');
+    });
+});
 
