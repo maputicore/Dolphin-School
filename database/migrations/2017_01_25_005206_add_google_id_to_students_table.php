@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDescriptionToTeachersTable extends Migration
+class AddGoogleIdToStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddDescriptionToTeachersTable extends Migration
      */
     public function up()
     {
-        Schema::table('teachers', function (Blueprint $table) {
-            $table->text('description')->after('name')->nullable();
+        Schema::table('students', function (Blueprint $table) {
+            $table->string('google_id', 255)->after('email')->nullable()->index();
         });
     }
 
@@ -25,8 +25,8 @@ class AddDescriptionToTeachersTable extends Migration
      */
     public function down()
     {
-        Schema::table('teachers', function (Blueprint $table) {
-            $table->dropColumn('description');
+        Schema::table('students', function (Blueprint $table) {
+            $table->dropColumn('google_id');
         });
     }
 }
