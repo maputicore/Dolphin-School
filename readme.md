@@ -13,3 +13,15 @@ Documentation for the framework can be found on the [Laravel website](http://lar
 ## Skyway
 [Skyway forum](https://support.skyway.io/hc/ja/community/topics)
 [Skyway MultiParty](https://github.com/nttcom/SkyWay-MultiParty)
+
+## Development
+
+composer install
+
+npm i
+
+php artisan migrate
+
+php artisan serve
+
+configure .env
