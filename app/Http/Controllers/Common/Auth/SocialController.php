@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Common\Auth;
 
+use App\Models\Student;
 use App\Models\Teacher;
-// use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Input;
-// use Illuminate\Support\Facades\Config;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Contracts\Auth\Factory as Auth;
 // use Laravel\Socialite\Two\InvalidStateException;
@@ -35,13 +33,18 @@ class SocialController extends Controller
             'email' => $user->getEmail(),
             // 'nick' => $user->getNickname(),
             'name' => $user->getName(),
-            'description' => 'something',
+            'description' => 'Write something',
             // 'avatar' => $user->getAvatar(),
             // 'token' => $user->getToken(),
-            'password' => 'Google',
+            'password' => 'Set the password',
         ];
 
-        $this->auth->guard('teacher')->login(Teacher::firstOrCreate($data));
-        return redirect()->to('/');
+        if ($student = Student::where('google_id', [$data['google_id']])->first()) {
+            $this->auth->guard('student')->loginUsingId($student->id);
+            return redirect()->to('/');
+        } else {
+            $this->auth->guard('student')->login(Student::create($data));
+            return redirect()->to('/settings/profile');
+        }
     }
 }
