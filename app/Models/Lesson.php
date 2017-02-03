@@ -10,7 +10,7 @@ class Lesson extends Model
     protected $table = "lessons";
 
     protected $fillable = [
-        'teacher_id', 'name', 'description'
+        'teacher_id', 'name', 'description', 'joining_qualification'
     ];
 
     public function lessonsStudents()

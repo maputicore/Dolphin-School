@@ -8,10 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title> {{ config('app.name', '') }}</title>
+    <title> {{ config('app.name', 'Student') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script src="https://skyway.io/dist/0.3/peer.min.js"></script>
     <script src="https://skyway.io/dist/multiparty.min.js"></script>
@@ -90,6 +90,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    <script type="text/javascript" src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>

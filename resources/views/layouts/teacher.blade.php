@@ -13,8 +13,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script type="text/javascript" src="https://cdn.skyway.io/skyway.js"></script>
+    <script src="https://skyway.io/dist/0.3/peer.min.js"></script>
+    <script src="https://skyway.io/dist/multiparty.min.js"></script>
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -50,6 +50,7 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/chat">VideoChat</a></li>
                         <!-- Authentication Links -->
                         @if (Auth::guard('teacher')->guest())
                             <li><a href="{{ url('/login') }}">Login</a></li>
@@ -60,6 +61,11 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="/settings/profile">
+                                            Setting
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();

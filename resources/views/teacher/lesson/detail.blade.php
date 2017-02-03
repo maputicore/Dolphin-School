@@ -4,9 +4,11 @@
 <h1>タイトル : {{ $lesson->name }}
     <small>{{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
 </h1>
-<p>{{ $lesson->description }}</p>
-
+<p>内容 : {{ $lesson->description }}</p>
+<a href="/lesson/{{ $lesson->id }}/edit">Edit</a>
 <style> video { width:200px; } </style>
+
+
 <div class="flex-center position-ref full-height">
     <div class="content">
 

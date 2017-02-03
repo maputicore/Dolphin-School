@@ -3,7 +3,6 @@
 @section('content')
 
 {!! Form::open(['url' => '/lesson/create', 'method' => 'get']) !!}
-<!-- {!! Form::open(['url' => '/', 'method' => 'get']) !!} -->
     <button>Create new Lesson</button>
 {!! Form::close() !!}
 
