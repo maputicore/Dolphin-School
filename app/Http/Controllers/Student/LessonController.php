@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Teacher;
+namespace App\Http\Controllers\Student;
 
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use App\Models\LessonsStudent;
 use App\Http\Controllers\Controller;
 
-class LessonsController extends Controller
+class LessonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,23 @@ class LessonsController extends Controller
     public function index()
     {
         $lessons = Lesson::all();
-        return view('teacher.dashboard')->with('lessons', $lessons);
+        $lessonsStudents = LessonsStudent::all();
+
+        return view('student.dashboard')->with('lessons', $lessons);
+    }
+
+    public function register($id)
+    {
+        $lessonId = $id;
+        $studentId = $this->currentUser->id;
+
+        $lessonsStudent = new LessonsStudent();
+        $lessonsStudent->lesson_id = $lessonId;
+        $lessonsStudent->student_id = $studentId;
+        $lessonsStudent->is_join = true;
+        $lessonsStudent->save();
+
+        return redirect()->to('/');
     }
 
     /**
@@ -26,7 +43,7 @@ class LessonsController extends Controller
      */
     public function create()
     {
-        return view('teacher.lesson.create');
+        //
     }
 
     /**
@@ -37,14 +54,7 @@ class LessonsController extends Controller
      */
     public function store(Request $request)
     {
-        $lesson = new Lesson();
-        $lesson->teacher_id = $this->currentUser->id;
-        $lesson->name = $request->input('name');
-        $lesson->description = $request->input('description');
-        $lesson->start_time = $request->input('start_time');
-        $lesson->finish_time = $request->input('finish_time');
-        $lesson->save();
-        return redirect()->to('/');
+        //
     }
 
     /**
@@ -56,13 +66,14 @@ class LessonsController extends Controller
     public function show($id)
     {
         $lesson = Lesson::find($id);
+
         $sessionId = $lesson->id . '_' . $lesson->name . '_' . $lesson->teacher->id . '_' . $lesson->teacher->name;
 
-        // $lessonsStudent = LessonsStudent::where('lesson_id', $id)->first();
+        $lessonsStudent = LessonsStudent::where('lesson_id', $id)->first();
 
-        // $isRegistered = ($lessonsStudent->student_id == $this->currentUser->id);
+        $isRegistered = ($lessonsStudent->student_id == $this->currentUser->id);
 
-        return view('teacher.lesson.detail')->with(['lesson' => $lesson, 'sessionId' => $sessionId]);
+        return view('student.lesson.detail')->with(['lesson' => $lesson, 'isRegistered' => $isRegistered, 'sessionId' => $sessionId]);
     }
 
     /**

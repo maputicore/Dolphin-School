@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Student\Auth;
 
 use App\User;
 use Validator;
-use App\Student;
+use App\Models\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -33,10 +33,10 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest:student');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest:student');
+    // }
 
     /**
      * Get a validator for an incoming registration request.
@@ -48,7 +48,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:students',
             'password' => 'required|min:6|confirmed',
         ]);
     }
@@ -78,12 +78,4 @@ class RegisterController extends Controller
         return view('student.auth.register');
     }
 
-    public function redirectPath()
-    {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
-    }
 }
