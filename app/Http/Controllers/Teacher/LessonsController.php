@@ -41,6 +41,7 @@ class LessonsController extends Controller
         $lesson->teacher_id = $this->currentUser->id;
         $lesson->name = $request->input('name');
         $lesson->description = $request->input('description');
+        $lesson->joining_qualification = $request->input('joining_qualification');
         $lesson->start_time = $request->input('start_time');
         $lesson->finish_time = $request->input('finish_time');
         $lesson->save();
@@ -73,7 +74,9 @@ class LessonsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lesson = Lesson::find($id);
+
+        return view('teacher.lesson.edit')->with('lesson', $lesson);
     }
 
     /**
@@ -85,7 +88,14 @@ class LessonsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $lesson = Lesson::find($id);
+        $lesson->name = $request->input('name');
+        $lesson->description = $request->input('description');
+        $lesson->joining_qualification = ($j_q = $request->input('joining_qualification') != '') ? $j_q: null;
+        $lesson->start_time = $request->input('start_time');
+        $lesson->finish_time = $request->input('finish_time');
+        $lesson->save();
+        return redirect()->to('/lesson/'.$id);
     }
 
     /**

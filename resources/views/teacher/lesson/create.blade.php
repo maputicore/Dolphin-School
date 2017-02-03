@@ -7,6 +7,8 @@
     {!! Form::text('name') !!}
     {!! Form::label('description', '説明') !!}
     {!! Form::text('description') !!}
+    {!! Form::label('joining_qualification', '説明') !!}
+    {!! Form::text('joining_qualification') !!}
     {!! Form::label('start_time', '始まり時間') !!}
     {!! Form::text('start_time', '', ['id' => 'date_picker1']) !!}
     {!! Form::label('finish_time', '終わり時間') !!}

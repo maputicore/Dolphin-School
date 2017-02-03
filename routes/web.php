@@ -9,9 +9,18 @@ Route::group([
         Route::post('/lesson', 'LessonsController@store');
         Route::get('/lesson/create/', 'LessonsController@create');
         Route::get('/lesson/{id}/', 'LessonsController@show');
+        Route::get('/lesson/{id}/edit', 'LessonsController@edit');
+        Route::post('/lesson/{id}/update', 'LessonsController@update');
         // Route::get('/lesson/create/', 'LessonsController@create');
         Route::resource('/students', 'StudentsController');
         // Route::resource('/lessons', 'LessonsController');
+        Route::get('/chat', function () {
+            return view('student.videochat');
+        });
+        Route::group(['prefix' => 'settings'], function () {
+            Route::get('/profile', 'TeacherController@show');
+            Route::post('/profile', 'TeacherController@update');
+        });
     });
 
     Route::group([
