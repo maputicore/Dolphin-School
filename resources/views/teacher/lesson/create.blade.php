@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    {!! Form::open(['url' => 'lessons']) !!}
+    {!! Form::open(['url' => 'lesson']) !!}
     {!! Form::label('name', 'タイトル') !!}
     {!! Form::text('name') !!}
     {!! Form::label('description', '説明') !!}

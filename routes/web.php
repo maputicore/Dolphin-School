@@ -5,9 +5,13 @@ Route::group([
     'namespace' => 'Teacher',
 ], function () {
     Route::group(['middleware' => 'auth:teacher'], function () {
-        Route::get('/', 'HomeController@index');
+        Route::get('/', 'LessonsController@index');
+        Route::post('/lesson', 'LessonsController@store');
+        Route::get('/lesson/create/', 'LessonsController@create');
+        Route::get('/lesson/{id}/', 'LessonsController@show');
+        // Route::get('/lesson/create/', 'LessonsController@create');
         Route::resource('/students', 'StudentsController');
-        Route::resource('/lessons', 'LessonsController');
+        // Route::resource('/lessons', 'LessonsController');
     });
 
     Route::group([
@@ -30,7 +34,18 @@ Route::group([
     'namespace' => 'Student',
 ], function () {
     Route::group(['middleware' => 'auth:student'], function () {
-        Route::get('/', 'HomeController@index');
+        Route::get('/', 'LessonController@index');
+        Route::get('/lesson/{id}/', 'LessonController@show');
+        // Route::resource('/students', 'StudentsController');
+        // Route::resource('/lessons', 'LessonsController');
+        Route::post('/lesson/{id}/register', 'LessonController@register');
+        Route::get('/chat', function () {
+            return view('student.videochat');
+        });
+        Route::group(['prefix' => 'settings'], function () {
+            Route::get('/profile', 'StudentController@show');
+            Route::post('/profile', 'StudentController@update');
+        });
     });
 
     Route::group([
@@ -42,8 +57,10 @@ Route::group([
         Route::post('logout', 'LoginController@logout');
 
         // Registration Routes...
-        Route::get('register', 'RegisterController@showRegistrationForm');
-        Route::post('register', 'RegisterController@register');
+        Route::middleware('guest:student')->group(function () {
+            Route::get('register', 'RegisterController@showRegistrationForm');
+            Route::post('register', 'RegisterController@register');
+        });
 
         // Password Reset Routes...
         // Route::get('password/reset/{token?}', 'PasswordController@showResetForm');
@@ -61,7 +78,6 @@ Route::get('/auth/{service}/callback', 'Common\Auth\SocialController@handleProvi
 
 // Route::group([
 //     'namespace' => 'Teacher',
-//     'prefix' => 'teacher',
 // ], function () {
 //     Route::group(['middleware' => 'auth:teacher'], function () {
 //         Route::get('/', 'HomeController@index');
@@ -88,12 +104,14 @@ Route::group([
     'namespace' => 'Student',
 ], function () {
     Route::group(['middleware' => 'auth:student'], function () {
-        Route::get('/', function () {
-            return view('index')->with('env', app()->environment());
-        });
+        Route::get('/', 'LessonController@index');
+        Route::get('/lesson/{id}/', 'LessonController@show');
         // Route::resource('/students', 'StudentsController');
         // Route::resource('/lessons', 'LessonsController');
-
+        Route::post('/lesson/{id}/register', 'LessonController@register');
+        Route::get('/chat', function () {
+            return view('student.videochat');
+        });
         Route::group(['prefix' => 'settings'], function () {
             Route::get('/profile', 'StudentController@show');
             Route::post('/profile', 'StudentController@update');
@@ -107,6 +125,12 @@ Route::group([
         Route::get('login', 'LoginController@showLoginForm');
         Route::post('login', 'LoginController@login');
         Route::post('logout', 'LoginController@logout');
+
+        // Registration Routes...
+        Route::middleware('guest:student')->group(function () {
+            Route::get('register', 'RegisterController@showRegistrationForm');
+            Route::post('register', 'RegisterController@register');
+        });
 
         // Password Reset Routes...
         // Route::get('password/reset/{token?}', 'PasswordController@showResetForm');
