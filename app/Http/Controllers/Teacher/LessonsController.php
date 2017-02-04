@@ -57,8 +57,9 @@ class LessonsController extends Controller
     public function show($id)
     {
         $lesson = Lesson::find($id);
-        $sessionId = $lesson->id . '_' . $lesson->name . '_' . $lesson->teacher->id . '_' . $lesson->teacher->name;
-
+        $sessionId = bcrypt($lesson->id . '_' . $lesson->name . '_' . $lesson->teacher->id . '_' . $lesson->teacher->name);
+        $sessionId = preg_replace('/[^ぁ-んァ-ンーa-zA-Z0-9一-龠0-9\-\r]+/u', '', $sessionId);
+        $sessionId = substr($sessionId, 0, 32);
         // $lessonsStudent = LessonsStudent::where('lesson_id', $id)->first();
 
         // $isRegistered = ($lessonsStudent->student_id == $this->currentUser->id);
