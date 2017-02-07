@@ -11,7 +11,7 @@
     <title> {{ config('app.name', 'Student') }}</title>
 
     <!-- Styles -->
-    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
+    <link href="{{ elixir('css/student.css') }}" rel="stylesheet">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script src="https://skyway.io/dist/0.3/peer.min.js"></script>
     <script src="https://skyway.io/dist/multiparty.min.js"></script>
@@ -38,7 +38,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }} for students
+                        {{ config('app.name', 'Laravel') }} <small>for students</small>
                     </a>
                 </div>
 
@@ -50,12 +50,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/chat">VideoChat</a></li>
                         <!-- Authentication Links -->
                         @if (Auth::guard('student')->guest())
                             <li><a href="{{ url('/login') }}">Login</a></li>
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else (Auth::guard('student')->user())
+                            <li><a href="/chat">VideoChat</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::guard('student')->user()->name }} <span class="caret"></span>
@@ -65,6 +65,11 @@
                                     <li>
                                         <a href="/settings/profile">
                                             Setting
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/settings/password">
+                                            Password
                                         </a>
                                     </li>
                                     <li>

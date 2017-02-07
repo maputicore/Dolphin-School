@@ -1,37 +1,41 @@
 @extends('layouts.student')
 
 @section('content')
-<h1>タイトル : {{ $lesson->name }}
-    <small>{{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
-</h1>
-<p>{{ $lesson->description }}</p>
+<div class="container">
+  <h1>タイトル : {{ $lesson->name }}</h1>
+  <small>日時 : {{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
+  <p>内容 : {{ $lesson->description }}</p>
+  @if($isRegistered)
+  {!! Form::open(['url' => '/lesson/'.$lesson->id.'/cancel', 'method' => 'delete']) !!}
+  {!! Form::submit('UnRegister', ['class' => 'btn btn-danger UnRegisterBtn', 'id' => $lesson->id ]) !!}
+  {!! Form::close() !!}
+  @else
+  {!! Form::open(['url' => '/lesson/'.$lesson->id.'/register']) !!}
+  {!! Form::submit('Register', ['class' => 'btn btn-default registerBtn', 'id' => $lesson->id ]) !!}
+  {!! Form::close() !!}
+  @endif
+</div>
+
 @if($isRegistered)
-{!! Form::open(['url' => '/lesson/'.$lesson->id.'/cancel', 'method' => 'delete']) !!}
-{!! Form::submit('UnRegister', ['class' => 'UnRegisterBtn', 'id' => $lesson->id ]) !!}
-{!! Form::close() !!}
-@else
-{!! Form::open(['url' => '/lesson/'.$lesson->id.'/register']) !!}
-{!! Form::submit('Register', ['class' => 'registerBtn', 'id' => $lesson->id ]) !!}
-{!! Form::close() !!}
-@endif
+<div class="container" id="multiparty">
+  <style> video { width:200px; } </style>
+  <div class="flex-center position-ref full-height">
+      <div class="content">
 
-<style> video { width:200px; } </style>
-<div class="flex-center position-ref full-height">
-    <div class="content">
+      </div>
 
-    </div>
-
-    <div id="message">
-      <form>
-        <input type="text"><button type="submit">send</button>
-      </form>
-      <p class="receive">
-      </p>
-    </div>
-    <div id="streams">
-        <button id="video-mute" data-muted="false">video mute</button>
-        <button id="audio-mute" data-muted="false">audio mute</button>
-    </div>
+      <div id="message">
+        <form>
+          <input type="text"><button type="submit">send</button>
+        </form>
+        <p class="receive">
+        </p>
+      </div>
+      <div id="streams">
+          <button id="video-mute" data-muted="false">video mute</button>
+          <button id="audio-mute" data-muted="false">audio mute</button>
+      </div>
+  </div>
 </div>
 
 <script>
@@ -115,4 +119,5 @@ function start() {
 }
 start();
 </script>
+@endif
 @endsection

@@ -5,15 +5,13 @@
     <small>{{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
 </h1>
 <p>内容 : {{ $lesson->description }}</p>
-<a href="/lesson/{{ $lesson->id }}/edit">Edit</a>
+<a class="btn btn-default" href="/lesson/{{ $lesson->id }}/edit">Edit</a>
+
+
 <style> video { width:200px; } </style>
-
-
 <div class="flex-center position-ref full-height">
     <div class="content">
-
     </div>
-
     <div id="message">
       <form>
         <input type="text"><button type="submit">send</button>
@@ -28,11 +26,9 @@
 </div>
 
 <script>
-
 var multiparty;
 // MultiParty インスタンスを生成
 var room_name = "{{ $sessionId }}";
-
 console.log(room_name);
 
 function start() {
@@ -43,7 +39,6 @@ function start() {
     "debug": 3,
     "room": room_name
   });
-  /////////////////////////////////
   // for MediaStream
   multiparty.on('my_ms', function(video) {
     // 自分のvideoを表示
@@ -63,20 +58,16 @@ function start() {
     // peerが切れたら、対象のvideoノードを削除する
     $("#"+peer_id).remove();
   })
-  ////////////////////////////////
   // for DataChannel
   multiparty.on('message', function(mesg) {
     // peerからテキストメッセージを受信
     $("p.receive").append(mesg.data + "<br>");
   });
-  ////////////////////////////////
-  // Error handling
   multiparty.on('error', function(err) {
     console.log(err);
     alert(err);
   });
   multiparty.start();
-  //////////////////////////////////////////////////////////
   // テキストフォームに入力されたテキストをpeerに送信
   $("#message form").on("submit", function(ev) {
     ev.preventDefault();  // onsubmitのデフォルト動作（reload）を抑制
@@ -92,8 +83,7 @@ function start() {
       $text.val("");
     }
   });
-  ///////////////////////////////////////////////////
-  // handle mute/unmute
+
   $("#video-mute").on("click", function(ev) {
     var mute = !$(this).data("muted");
     console.log(mute);

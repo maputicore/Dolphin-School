@@ -42,7 +42,7 @@
                             <label for="email" class="col-md-4 control-label">Description</label>
 
                             <div class="col-md-6">
-                                <input id="description" type="description" class="form-control" name="description" value="{{ $user->description }}" required autofocus>
+                                <textarea id="description" type="description" class="form-control" name="description" value="" required autofocus>{{ $user->description }}</textarea>
 
                                 @if ($errors->has('description'))
                                     <span class="help-block">
@@ -52,20 +52,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
- -->
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

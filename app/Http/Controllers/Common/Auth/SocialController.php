@@ -37,8 +37,9 @@ class SocialController extends Controller
             'description' => 'Write something',
             // 'avatar' => $user->getAvatar(),
             // 'token' => $user->getToken(),
-            'password' => 'Set the password',
+            'password' => bcrypt('default'),
         ];
+
         if (url('/') == "http://teacher.jumping-dolphin.local/") {
             if ($teacher = Teacher::where('google_id', [$data['google_id']])->first()) {
                 $this->auth->guard('teacher')->loginUsingId($teacher->id);
