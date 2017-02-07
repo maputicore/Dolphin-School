@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -52,6 +53,12 @@ class StudentController extends Controller
         return view('student.settings.profile')->with('user', $student);
     }
 
+    public function showPassword()
+    {
+        $student = $this->currentUser;
+        return view('student.settings.password')->with('user', $student);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -77,6 +84,25 @@ class StudentController extends Controller
         $student->name = $request->input('name');
         $student->email = $request->input('email');
         $student->description = $request->input('description');
+        $student->save();
+        return redirect()->to('/');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $this->validate($request, [
+            'password' => 'required',
+            'new-password' => 'required|confirmed'
+        ]);
+
+        $student = Student::find($this->currentUser->id);
+        $currentPassword = $request->input('password');
+        $newPassword = $request->input('new-password');
+        $confirmPassword = $request->input('new-password_confirmation');
+
+        if (Hash::check($currentPassword, $student->password) && $newPassword == $confirmPassword) {
+            $student->password = bcrypt($newPassword);
+        }
         $student->save();
         return redirect()->to('/');
     }

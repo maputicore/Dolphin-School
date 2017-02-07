@@ -14,7 +14,8 @@ const elixir = require('laravel-elixir');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
+    mix.sass('teacher.scss', 'public/css')
+       .sass('student.scss', 'public/css')
        .webpack('app.js')
        .phpUnit('phpunit.xml');
 });

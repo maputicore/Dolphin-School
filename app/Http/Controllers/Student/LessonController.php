@@ -27,13 +27,26 @@ class LessonController extends Controller
         $lessonId = $id;
         $studentId = $this->currentUser->id;
 
-        $lessonsStudent = new LessonsStudent();
-        $lessonsStudent->lesson_id = $lessonId;
-        $lessonsStudent->student_id = $studentId;
-        $lessonsStudent->is_join = true;
+        $lessonsStudent = LessonsStudent::updateOrCreate([
+            'lesson_id' => $lessonId,
+            'student_id' => $studentId,
+        ], [
+            'is_join' => 1,
+        ]);
+
+        return redirect()->to('/lesson/'.$lessonId);
+    }
+
+    public function cancel($id)
+    {
+        $lessonId = $id;
+        $studentId = $this->currentUser->id;
+
+        $lessonsStudent = LessonsStudent::where('lesson_id', $lessonId)->where('student_id', $studentId)->first();
+        $lessonsStudent->is_join = 0;
         $lessonsStudent->save();
 
-        return redirect()->to('/');
+        return redirect()->to('/lesson/'.$lessonId);
     }
 
     /**
@@ -66,12 +79,15 @@ class LessonController extends Controller
     public function show($id)
     {
         $lesson = Lesson::find($id);
+        $studentId = $this->currentUser->id;
 
-        $sessionId = $lesson->id . '_' . $lesson->name . '_' . $lesson->teacher->id . '_' . $lesson->teacher->name;
+        $sessionId = bcrypt($lesson->id . '_' . $lesson->name . '_' . $lesson->teacher->id . '_' . $lesson->teacher->name);
+        $sessionId = preg_replace('/[^ぁ-んァ-ンーa-zA-Z0-9一-龠0-9\-\r]+/u', '', $sessionId);
+        $sessionId = substr($sessionId, 0, 32);
 
-        $lessonsStudent = LessonsStudent::where('lesson_id', $id)->first();
+        $lessonsStudent = LessonsStudent::where('lesson_id', $id)->where('student_id', $studentId)->first();
 
-        $isRegistered = ($lessonsStudent->student_id == $this->currentUser->id);
+        $isRegistered = ($lessonsStudent->is_join == 1);
 
         return view('student.lesson.detail')->with(['lesson' => $lesson, 'isRegistered' => $isRegistered, 'sessionId' => $sessionId]);
     }

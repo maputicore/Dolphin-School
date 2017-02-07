@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Teacher') }}</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <link rel="stylesheet" href="{{ elixir('css/teacher.css') }}">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script src="https://skyway.io/dist/0.3/peer.min.js"></script>
     <script src="https://skyway.io/dist/multiparty.min.js"></script>
