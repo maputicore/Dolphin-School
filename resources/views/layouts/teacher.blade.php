@@ -38,7 +38,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }} for teachers
+                        {{ config('app.name', 'Laravel') }} <small>for teachers</small>
                     </a>
                 </div>
 

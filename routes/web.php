@@ -11,6 +11,7 @@ Route::group([
         Route::get('/lesson/{id}/', 'LessonsController@show');
         Route::get('/lesson/{id}/edit', 'LessonsController@edit');
         Route::post('/lesson/{id}/update', 'LessonsController@update');
+        Route::delete('/lesson/{id}/', 'LessonsController@destroy');
 
         Route::resource('/students', 'StudentsController');
         // Route::resource('/lessons', 'LessonsController');

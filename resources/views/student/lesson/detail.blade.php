@@ -118,6 +118,7 @@ function start() {
   });
 }
 start();
+
 </script>
 @endif
 @endsection
