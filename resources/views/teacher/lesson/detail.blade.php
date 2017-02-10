@@ -1,28 +1,34 @@
 @extends('layouts.teacher')
 
 @section('content')
-<h1>タイトル : {{ $lesson->name }}
-    <small>{{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
-</h1>
-<p>内容 : {{ $lesson->description }}</p>
-<a class="btn btn-default" href="/lesson/{{ $lesson->id }}/edit">Edit</a>
+<div class="container">
+  <h1>タイトル : {{ $lesson->name }}
+      <small>{{ date("Y年 m月 d日 H時 i分", strtotime($lesson->start_time)) }} to {{ date("H時 i分", strtotime($lesson->finish_time)) }}</small>
+  </h1>
+  <p>内容 : {{ $lesson->description }}</p>
+  <a class="btn btn-default" href="/lesson/{{ $lesson->id }}/edit">Edit</a>
+  {!! Form::open(['url' => 'lesson/'.$lesson->id, 'method' => 'DELETE']) !!}
+  {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+  {!! Form::close() !!}
+</div>
 
-
-<style> video { width:200px; } </style>
-<div class="flex-center position-ref full-height">
-    <div class="content">
-    </div>
-    <div id="message">
-      <form>
-        <input type="text"><button type="submit">send</button>
-      </form>
-      <p class="receive">
-      </p>
-    </div>
-    <div id="streams">
-        <button id="video-mute" data-muted="false">video mute</button>
-        <button id="audio-mute" data-muted="false">audio mute</button>
-    </div>
+<div class="container multiparty">
+  <style> video { width:200px; } </style>
+  <div class="flex-center position-ref full-height">
+      <div class="content">
+      </div>
+      <div id="message">
+        <form>
+          <input type="text"><button type="submit">send</button>
+        </form>
+        <p class="receive">
+        </p>
+      </div>
+      <div id="streams">
+          <button id="video-mute" data-muted="false">video mute</button>
+          <button id="audio-mute" data-muted="false">audio mute</button>
+      </div>
+  </div>
 </div>
 
 <script>
