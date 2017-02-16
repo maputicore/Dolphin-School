@@ -54,9 +54,17 @@ function start() {
     "debug": 3,
     "room": room_name
   });
-  /////////////////////////////////
+  console.log("something");
+  multiparty.startScreenShare(function (stream) {
+    attachMediaStream($("#screen")[0], stream);
+    console.log("screenshare");
+  }, function(err) {
+    console.log(err);
+  });
+
   // for MediaStream
   multiparty.on('my_ms', function(video) {
+
     // 自分のvideoを表示
     var vNode = MultiParty.util.createVideoNode(video);
     vNode.setAttribute("class", "video my-video");
@@ -74,21 +82,19 @@ function start() {
     // peerが切れたら、対象のvideoノードを削除する
     $("#"+peer_id).remove();
   })
-  ////////////////////////////////
+
   // for DataChannel
   multiparty.on('message', function(mesg) {
     // peerからテキストメッセージを受信
     $("p.receive").append(mesg.data + "<br>");
   });
-  ////////////////////////////////
-  // Error handling
+
   multiparty.on('error', function(err) {
     console.log(err);
     alert(err);
   });
   multiparty.start();
-  //////////////////////////////////////////////////////////
-  // テキストフォームに入力されたテキストをpeerに送信
+
   $("#message form").on("submit", function(ev) {
     ev.preventDefault();  // onsubmitのデフォルト動作（reload）を抑制
     // テキストデータ取得
@@ -103,8 +109,7 @@ function start() {
       $text.val("");
     }
   });
-  ///////////////////////////////////////////////////
-  // handle mute/unmute
+
   $("#video-mute").on("click", function(ev) {
     var mute = !$(this).data("muted");
     console.log(mute);
